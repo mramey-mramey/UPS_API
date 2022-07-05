@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d8616315-de4b-41e3-9182-b08999a13c49" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="C:\Users\rr305267\Downloads\Time_In_Transit\TimeInTransit\TimeInTransitforPACKAGE\TIMEINTRANSITWebServices\SCHEMA-WSDLs\TNTWS.wsdl" Protocol="file" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="common.xsd" MetadataType="Schema" ID="b60c5271-a766-4d76-b714-850072864aae" SourceId="1" SourceUrl="file:///C:/Users/rr305267/Downloads/Time_In_Transit/TimeInTransit/TimeInTransitforPACKAGE/TIMEINTRANSITWebServices/SCHEMA-WSDLs/common.xsd" />
+    <MetadataFile FileName="TimeInTransitWebServiceSchema.xsd" MetadataType="Schema" ID="d2df5b14-84e0-4cef-a692-d8de164f3e1a" SourceId="1" SourceUrl="file:///C:/Users/rr305267/Downloads/Time_In_Transit/TimeInTransit/TimeInTransitforPACKAGE/TIMEINTRANSITWebServices/SCHEMA-WSDLs/TimeInTransitWebServiceSchema.xsd" />
+    <MetadataFile FileName="Error1.xsd" MetadataType="Schema" ID="49cf8592-909e-4135-8c27-b4a4bb91d57d" SourceId="1" SourceUrl="file:///C:/Users/rr305267/Downloads/Time_In_Transit/TimeInTransit/TimeInTransitforPACKAGE/TIMEINTRANSITWebServices/SCHEMA-WSDLs/Error1.1.xsd" />
+    <MetadataFile FileName="TimeInTransit.wsdl" MetadataType="Wsdl" ID="76dbf60d-8b7c-41be-a3b0-77ccdb94fa12" SourceId="1" SourceUrl="file:///C:/Users/rr305267/Downloads/Time_In_Transit/TimeInTransit/TimeInTransitforPACKAGE/TIMEINTRANSITWebServices/SCHEMA-WSDLs/TNTWS.wsdl" />
+    <MetadataFile FileName="UPSSecurity.xsd" MetadataType="Schema" ID="da42e1fb-cb3d-46c1-97bf-9d7c9cd12277" SourceId="1" SourceUrl="file:///C:/Users/rr305267/Downloads/Time_In_Transit/TimeInTransit/TimeInTransitforPACKAGE/TIMEINTRANSITWebServices/SCHEMA-WSDLs/UPSSecurity.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

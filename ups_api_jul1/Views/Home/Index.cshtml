@@ -1,0 +1,62 @@
+﻿@{ ViewBag.Title = "Home Page"; }
+
+<div class="text-center">
+    <form class="row justify-content-center p-4 p-md-5 order bg-light" id="uploadFrm" enctype="multipart/form-data" method="post" action="/Home/Index">
+        <label for="formFile" class="form-label">Upload a .csv file. Please make sure your file matches <a href="~/Content/template.csv">this</a> template.</label>
+
+        <div class="col-auto">
+            <input class="form-control" type="file" id="formFile" accept=".csv" name="postedFile">
+        </div>
+        <div class="col-auto">
+            <input type="submit" value="Upload" id="submitBtn" class="btn btn-success" />
+        </div>
+    </form>
+
+    @if (Model != null)
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">From Zip</th>
+                    <th scope="col">To Zip</th>
+                    <th scope="col">Service Code</th>
+                    <th scope="col">Service Description</th>
+                    <th scope="col">Pickup Date/Time</th>
+                    <th scope="col">Arrival Date/Time</th>
+                    <th scope="col">Business Days in Transit</th>
+                    <th scope="col">Arrival Day</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; ++i)
+                {
+                    foreach (var subLine in Model[i].Item.ServiceSummary)
+                    {
+                        <tr class="bg-@(i % 2)">
+                            <td>@(i + 1)</td>
+                            <td>@Model[i].Item.ShipFrom.Address.PostalCode</td>
+                            <td>@Model[i].Item.ShipTo.Address.PostalCode</td>
+                            <td>@subLine.Service.Code</td>
+                            <td>@subLine.Service.Description</td>
+                            <td>@subLine.EstimatedArrival.Pickup.Date / @subLine.EstimatedArrival.Pickup.Time.Substring(0, subLine.EstimatedArrival.Pickup.Time.Length - 2) </td>
+                            <td>@subLine.EstimatedArrival.Arrival.Date / @subLine.EstimatedArrival.Arrival.Time.Substring(0, subLine.EstimatedArrival.Arrival.Time.Length - 2)</td>
+                            <td>@subLine.EstimatedArrival.BusinessDaysInTransit</td>
+                            <td>@subLine.EstimatedArrival.DayOfWeek</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script>
+    $('#uploadFrm').on('submit', (e) => {
+        e.preventDefault();
+
+        if ($('#formFile').get(0).files.length !== 0) {
+            $('#uploadFrm')[0].submit();
+        }
+    });
+</script>
