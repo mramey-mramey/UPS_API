@@ -75,7 +75,7 @@ namespace ups_api_jul1.Controllers
 
                 catch (Exception)
                 {
-                    newRow.ErrorMsg = $"There was an error parsing line {i + 2}. Please make sure all fields are entered correctly.";
+                    newRow.ErrorMsg = $"There was an error parsing row {i + 2}. Please verify all fields are entered correctly.";
                 }
 
                 data.Add(newRow);
@@ -156,7 +156,7 @@ namespace ups_api_jul1.Controllers
                     apiResponse.Add(tntResponse);
                 }
 
-                catch(Exception)
+                catch(Exception e)
                 {
                     row.ErrorMsg = $"There was an error reaching the UPS API for row {i + 2}. Please verify data was entered in the correct format.";
                 }

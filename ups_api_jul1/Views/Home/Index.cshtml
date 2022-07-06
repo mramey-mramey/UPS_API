@@ -1,4 +1,4 @@
-﻿@{ ViewBag.Title = "Home Page"; }
+﻿@{ ViewBag.Title = "UPS Time in Transit Tool"; }
 
 <div class="text-center">
     <form class="row justify-content-center p-4 p-md-5 order bg-light" id="uploadFrm" enctype="multipart/form-data" method="post" action="/Home/Index">
@@ -32,8 +32,8 @@
                     <th scope="col">To Zip</th>
                     <th scope="col">Service Code</th>
                     <th scope="col">Service Description</th>
-                    <th scope="col">Pickup Date/Time</th>
-                    <th scope="col">Arrival Date/Time</th>
+                    <th scope="col">Pickup Date / Time</th>
+                    <th scope="col">Arrival Date / Time</th>
                     <th scope="col">Business Days in Transit</th>
                     <th scope="col">Arrival Day</th>
                 </tr>
@@ -49,8 +49,8 @@
                             <td>@Model.ApiResponse[i].Item.ShipTo.Address.PostalCode</td>
                             <td>@subLine.Service.Code</td>
                             <td>@subLine.Service.Description</td>
-                            <td>@subLine.EstimatedArrival.Pickup.Date / @subLine.EstimatedArrival.Pickup.Time.Substring(0, subLine.EstimatedArrival.Pickup.Time.Length - 2) </td>
-                            <td>@subLine.EstimatedArrival.Arrival.Date / @subLine.EstimatedArrival.Arrival.Time.Substring(0, subLine.EstimatedArrival.Arrival.Time.Length - 2)</td>
+                            <td>@subLine.EstimatedArrival.Pickup.Date.Substring(0, 4)-@subLine.EstimatedArrival.Pickup.Date.Substring(4, 2)-@subLine.EstimatedArrival.Pickup.Date.Substring(6, 2)  / @subLine.EstimatedArrival.Pickup.Time.Substring(0, 2):@subLine.EstimatedArrival.Pickup.Time.Substring(2, 2) </td>
+                            <td>@subLine.EstimatedArrival.Arrival.Date.Substring(0, 4)-@subLine.EstimatedArrival.Arrival.Date.Substring(4, 2)-@subLine.EstimatedArrival.Arrival.Date.Substring(6, 2) / @subLine.EstimatedArrival.Arrival.Time.Substring(0, 2):@subLine.EstimatedArrival.Arrival.Time.Substring(2, 2)</td>
                             <td>@subLine.EstimatedArrival.BusinessDaysInTransit</td>
                             <td>@subLine.EstimatedArrival.DayOfWeek</td>
                         </tr>
@@ -58,7 +58,7 @@
                 }
             </tbody>
         </table>
-        <button type="button" class="btn btn-outline-success" id="excelBtn">Export to Excel</button>
+        <button type="button" class="btn btn-outline-success" id="excelBtn">Export to .csv</button>
     }
 </div>
 
