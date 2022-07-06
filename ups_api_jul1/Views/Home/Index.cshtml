@@ -14,6 +14,16 @@
 
     @if (Model != null)
     {
+        <div id="errorTxtArea">
+            @foreach (var line in Model.ParsedData)
+            {
+                if (!string.IsNullOrEmpty(line.ErrorMsg))
+                {
+                    <div class="errorTxt"><em>@line.ErrorMsg</em></div>
+                }
+            }
+        </div>
+
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -29,14 +39,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.Count; ++i)
+                @for (int i = 0; i < Model.ApiResponse.Count; ++i)
                 {
-                    foreach (var subLine in Model[i].Item.ServiceSummary)
+                    foreach (var subLine in Model.ApiResponse[i].Item.ServiceSummary)
                     {
                         <tr class="bg-@(i % 2)">
                             <td>@(i + 1)</td>
-                            <td>@Model[i].Item.ShipFrom.Address.PostalCode</td>
-                            <td>@Model[i].Item.ShipTo.Address.PostalCode</td>
+                            <td>@Model.ApiResponse[i].Item.ShipFrom.Address.PostalCode</td>
+                            <td>@Model.ApiResponse[i].Item.ShipTo.Address.PostalCode</td>
                             <td>@subLine.Service.Code</td>
                             <td>@subLine.Service.Description</td>
                             <td>@subLine.EstimatedArrival.Pickup.Date / @subLine.EstimatedArrival.Pickup.Time.Substring(0, subLine.EstimatedArrival.Pickup.Time.Length - 2) </td>
@@ -48,6 +58,7 @@
                 }
             </tbody>
         </table>
+        <button type="button" class="btn btn-outline-success" id="excelBtn">Export to Excel</button>
     }
 </div>
 
@@ -59,4 +70,58 @@
             $('#uploadFrm')[0].submit();
         }
     });
+
+    $('#excelBtn').on('click', () => {
+        tableToCSV();
+    });
+
+    //https://www.geeksforgeeks.org/how-to-export-html-table-to-csv-using-javascript/
+    function tableToCSV() {
+
+        // Variable to store the final csv data
+        var csv_data = [];
+
+        // Get each row data
+        var rows = document.getElementsByTagName('tr');
+        for (var i = 0; i < rows.length; i++) {
+
+            // Get each column data
+            var cols = rows[i].querySelectorAll('td,th');
+
+            // Stores each csv row data
+            var csvrow = [];
+            for (var j = 0; j < cols.length; j++) {
+
+                // Get the text data of each cell of
+                // a row and push it to csvrow
+                csvrow.push(cols[j].innerHTML);
+            }
+
+            // Combine each column value with comma
+            csv_data.push(csvrow.join(","));
+        }
+        // combine each row data with new line character
+        csv_data = csv_data.join('\n');
+
+        // Create CSV file object and feed our
+        // csv_data into it
+        CSVFile = new Blob([csv_data], { type: "text/csv" });
+
+        // Create to temporary link to initiate
+        // download process
+        var temp_link = document.createElement('a');
+
+        // Download csv file
+        temp_link.download = "UPS_results.csv";
+        var url = window.URL.createObjectURL(CSVFile);
+        temp_link.href = url;
+
+        // This link should not be displayed
+        temp_link.style.display = "none";
+        document.body.appendChild(temp_link);
+
+        // Automatically click the link to trigger download
+        temp_link.click();
+        document.body.removeChild(temp_link);
+    }
 </script>

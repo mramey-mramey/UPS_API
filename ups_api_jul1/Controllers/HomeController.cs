@@ -25,7 +25,7 @@ namespace ups_api_jul1.Controllers
             }            
         }
             
-        private List<TimeInTransitResponse> ProcessCsv(HttpPostedFileBase postedFile)
+        private ApiResults ProcessCsv(HttpPostedFileBase postedFile)
         {
             List<CsvRow> data = new List<CsvRow>();
 
@@ -46,13 +46,19 @@ namespace ups_api_jul1.Controllers
 
             //parse each line 
             List<string> temp;
-            foreach (string line in csvData)
+            for (int i = 0; i < csvData.Count; ++i)
             {
+                CsvRow newRow = new CsvRow();
+                string line = csvData[i];
+
+                //if there's an empty line, still add to list to preserve line numbers. these lines will not be sent to the API.
                 if (string.IsNullOrEmpty(line) || line == ",,,,,")
+                {
+                    data.Add(newRow);
                     continue;
+                }
 
                 temp = line.Split(',').ToList();
-                CsvRow newRow = new CsvRow();
 
                 try
                 {
@@ -69,7 +75,7 @@ namespace ups_api_jul1.Controllers
 
                 catch (Exception)
                 {
-                    newRow.ErrorMsg = "There was an error parsing this line. Please make sure all fields were entered correctly.";
+                    newRow.ErrorMsg = $"There was an error parsing line {i + 2}. Please make sure all fields are entered correctly.";
                 }
 
                 data.Add(newRow);
@@ -78,13 +84,15 @@ namespace ups_api_jul1.Controllers
             return CalcTimeInTransit(data);
         }
 
-        private List<TimeInTransitResponse> CalcTimeInTransit(List<CsvRow> data)
+        private ApiResults CalcTimeInTransit(List<CsvRow> data)
         {
-            List<TimeInTransitResponse> results = new List<TimeInTransitResponse>();
+            List<TimeInTransitResponse> apiResponse = new List<TimeInTransitResponse>();
 
-            foreach (CsvRow row in data)
-            {               
-                if (!string.IsNullOrEmpty(row.ErrorMsg))
+            for (int i = 0; i < data.Count; ++i)
+            {
+                CsvRow row = data[i];
+
+                if (!string.IsNullOrEmpty(row.ErrorMsg) || row.DestinationZip == 0)
                 {
                     continue;
                 }
@@ -145,17 +153,22 @@ namespace ups_api_jul1.Controllers
                     System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12 | System.Net.SecurityProtocolType.Tls | System.Net.SecurityProtocolType.Tls11; //This line will ensure the latest security protocol for consuming the web service call.
                     TimeInTransitResponse tntResponse = tntService.ProcessTimeInTransit(tntRequest);
 
-
-                    results.Add(tntResponse);
+                    apiResponse.Add(tntResponse);
                 }
 
                 catch(Exception)
                 {
-
+                    row.ErrorMsg = $"There was an error reaching the UPS API for row {i + 2}. Please verify data was entered in the correct format.";
                 }
             }
 
-            return results;
+            ApiResults result = new ApiResults
+            {
+                ApiResponse = apiResponse,
+                ParsedData = data
+            };
+
+            return result;
         }
     }
 }
