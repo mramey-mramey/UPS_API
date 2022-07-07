@@ -11,9 +11,13 @@
             <input type="submit" value="Upload" id="submitBtn" class="btn btn-success" />
         </div>
     </form>
-
+</div>
     @if (Model != null)
     {
+        <input class="form-check-input" type="checkbox" value="" id="chkHideTable">
+        <label class="form-check-label" for="flexCheckDefault">
+            Hide Table
+        </label>
         <div id="errorTxtArea">
             @foreach (var line in Model.ParsedData)
             {
@@ -24,7 +28,7 @@
             }
         </div>
 
-        <table class="table table-hover">
+        <table class="table table-hover" id="tblResults">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -58,14 +62,38 @@
                 }
             </tbody>
         </table>
-        <button type="button" class="btn btn-outline-success" id="excelBtn">Export to .csv</button>
+        <div class="text-center">
+            <button type="button" class="btn btn-outline-success text-center" id="excelBtn">Export to .csv</button>
+        </div>
     }
-</div>
+
 
 <script>
+    //preserves state of checkbox between refreshes.
+    $(document).ready(() => {
+        var checked = JSON.parse(localStorage.getItem('hideTable'));
+        $('#chkHideTable').prop('checked', checked);
+        toggleTable();
+    });
+
+    $('#chkHideTable').on('change', toggleTable);
+
+    function toggleTable() {
+        if ($('#chkHideTable').is(":checked")) {
+            $('#tblResults').hide();
+            localStorage.setItem('hideTable', true);
+        }
+
+        else {
+            $('#tblResults').show();
+            localStorage.setItem('hideTable', false);
+        }
+    }
+
     $('#uploadFrm').on('submit', (e) => {
         e.preventDefault();
 
+        //checks if a file has been selected
         if ($('#formFile').get(0).files.length !== 0) {
             $('#uploadFrm')[0].submit();
         }
