@@ -63,8 +63,8 @@ namespace ups_api_jul1.Controllers
                 try
                 {
                     //first 3 columns are required
-                    newRow.OriginZip = int.Parse(temp[0]);
-                    newRow.DestinationZip = int.Parse(temp[1]);
+                    newRow.OriginZip = temp[0];
+                    newRow.DestinationZip = temp[1];
                     newRow.PickupDate = temp[2];
 
                     //last 3 columns are optional
@@ -73,7 +73,7 @@ namespace ups_api_jul1.Controllers
                     newRow.TotalPackages = string.IsNullOrEmpty(temp[5]) ? 1 : int.Parse(temp[5]);
                 }
 
-                catch (Exception)
+                catch (Exception e)
                 {
                     newRow.ErrorMsg = $"There was an error parsing row {i + 2}. Please verify all fields are entered correctly.";
                 }
@@ -92,7 +92,7 @@ namespace ups_api_jul1.Controllers
             {
                 CsvRow row = data[i];
 
-                if (!string.IsNullOrEmpty(row.ErrorMsg) || row.DestinationZip == 0)
+                if (!string.IsNullOrEmpty(row.ErrorMsg) || row.DestinationZip == null)
                 {
                     continue;
                 }
@@ -109,14 +109,14 @@ namespace ups_api_jul1.Controllers
                     RequestShipFromType shipFrom = new RequestShipFromType();
                     RequestShipFromAddressType addressFrom = new RequestShipFromAddressType();
                     addressFrom.CountryCode = "US";
-                    addressFrom.PostalCode = row.OriginZip.ToString();
+                    addressFrom.PostalCode = row.OriginZip;
                     shipFrom.Address = addressFrom;
                     tntRequest.ShipFrom = shipFrom;
 
                     RequestShipToType shipTo = new RequestShipToType();
                     RequestShipToAddressType addressTo = new RequestShipToAddressType();
                     addressTo.CountryCode = "US";
-                    addressTo.PostalCode = row.DestinationZip.ToString();
+                    addressTo.PostalCode = row.DestinationZip;
                     shipTo.Address = addressTo;
                     tntRequest.ShipTo = shipTo;
 
@@ -158,7 +158,7 @@ namespace ups_api_jul1.Controllers
 
                 catch(Exception e)
                 {
-                    row.ErrorMsg = $"There was an error reaching the UPS API for row {i + 2}. Please verify data was entered in the correct format.";
+                    row.ErrorMsg = $"There was an error reaching the UPS API for row {i + 2}: Please verify data was entered in the correct format.";
                 }
             }
 

@@ -7,9 +7,9 @@ namespace ups_api_jul1.Models
 {
     public class CsvRow
     {
-        public int OriginZip { get; set; }
+        public string OriginZip { get; set; }
 
-        public int DestinationZip { get; set; }
+        public string DestinationZip { get; set; }
 
         public string PickupDate { get; set; }
 
